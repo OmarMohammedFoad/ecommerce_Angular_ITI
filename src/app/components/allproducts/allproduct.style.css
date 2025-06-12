@@ -1,0 +1,9 @@
+/* product-list.component.css */
+.btn-active {
+    @apply bg-primary text-white;
+  }
+  
+  /* Disabled state for buttons */
+  .btn[disabled] {
+    @apply opacity-50 cursor-not-allowed;
+  }

@@ -1,0 +1,28 @@
+<div class="flex justify-center items-center p-3 h-full">
+    <div class="container bg-gray-200 flex flex-col shadow-2xl rounded-xl p-5 gap-5">
+        <div class="flex justify-between">
+            <h1 class="text-4xl text-gray-900">
+                Carts
+            </h1>
+            <button (click)="removeAllItems()" class="btn btn-error">Clear All</button>
+        </div>
+
+        <ul class="flex flex-col gap-8">
+            @for (item of cartItems; track $index) {
+            <li class="flex justify-between items-center text-gray-800">
+                <div class="flex gap-2.5 items-center">
+                    <div class="w-32 h-32 rounded-md overflow-hidden">
+                        <img [src]="item.product.imageCover" [alt]="item.product.title"
+                            class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <h1 class="text-2xl font-extralight">{{item.product.title}}</h1>
+                        <p class="font-extralight">price : <span>{{item.price}}EGP</span></p>
+                        <button (click)="removeCartItem(item._id)" class="btn btn-error">remove</button>
+                    </div>
+                </div>
+            </li>
+            }
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<!-- NAVBAR WRAPPER -->
+<div class="navbar bg-gray-200 flex justify-between items-center px-6 py-2">
+  <a routerLink="/" class="text-2xl font-extrabold">FreshCart</a>
+
+  <div class="flex items-center gap-6">
+    <!-- Authenticated User Links -->
+    @if (isAuthenticated()) {
+    <a routerLink="/products" routerLinkActive="text-blue-600 font-bold" class="cursor-pointer">Products</a>
+    <a routerLink="/categories" routerLinkActive="text-blue-600 font-bold" class="cursor-pointer">Categories</a>
+
+    <!-- Wishlist Icon with Badge -->
+    <div class="relative cursor-pointer">
+      <mat-icon routerLink="/wishlist" routerLinkActive="text-blue-600 font-bold" class=" !text-red">favorite</mat-icon>
+      <span *ngIf="wishCount > 0"
+        class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+        {{ wishCount }}
+      </span>
+    </div>
+
+    <!-- Cart Icon with Badge -->
+    <div class="relative cursor-pointer">
+      <mat-icon [matBadge]="cartCount" routerLink="/cart" routerLinkActive="text-blue-600 font-bold"
+        class="text-black !text-black">shopping_cart</mat-icon>
+
+
+
+
+    </div>
+
+    <a (click)="logout()" class="cursor-pointer">Logout</a>
+    }
+
+    @if (!isAuthenticated()) {
+    <a routerLink="/login" routerLinkActive="text-blue-600 font-bold" class="cursor-pointer">Login</a>
+    <a routerLink="/register" routerLinkActive="text-blue-600 font-bold" class="cursor-pointer">Register</a>
+    }
+  </div>
+</div>

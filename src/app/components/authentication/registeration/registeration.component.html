@@ -1,0 +1,97 @@
+<div class="min-h-screen flex justify-center items-center">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()"
+        class="w-full md:w-4xl p-8 rounded-lg shadow-md flex flex-col gap-2">
+        <h1 class="mt-10 text-4xl">Register Now</h1>
+
+        <!-- Name Field -->
+        <div class="relative z-0 w-full mb-5 group">
+            <input type="text" formControlName="name" name="floating_name" id="floating_name"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer"
+                placeholder=" " required />
+            <label for="floating_name"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-green-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                Full Name
+            </label>
+            <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched"
+                class="text-red-500 text-sm">
+                Name is required
+            </div>
+        </div>
+
+        <!-- Email Field -->
+        <div class="relative z-0 w-full mb-5 group">
+            <input type="email" formControlName="email" name="floating_email" id="floating_email"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer"
+                placeholder=" " required />
+            <label for="floating_email"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-green-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                Email address
+            </label>
+            <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+                class="text-red-500 text-sm">
+                <div *ngIf="registerForm.get('email')?.hasError('required')">Email is required</div>
+                <div *ngIf="registerForm.get('email')?.hasError('email')">Please enter a valid email</div>
+            </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="relative z-0 w-full mb-5 group">
+            <input type="password" formControlName="password" name="floating_password" id="floating_password"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer"
+                placeholder=" " required />
+            <label for="floating_password"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-green-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                Password
+            </label>
+            <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+                class="text-red-500 text-sm">
+                <div *ngIf="registerForm.get('password')?.hasError('required')">Password is required</div>
+                <div *ngIf="registerForm.get('password')?.hasError('minlength')">Minimum 8 characters required</div>
+                <div *ngIf="registerForm.get('password')?.hasError('pattern')">Must contain letters, numbers, and
+                    symbols</div>
+            </div>
+        </div>
+
+        <!-- Confirm Password Field -->
+        <div class="relative z-0 w-full mb-5 group">
+            <input type="password" formControlName="rePassword" name="floating_repassword" id="floating_repassword"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer"
+                placeholder=" " required />
+            <label for="floating_repassword"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-green-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                Confirm Password
+            </label>
+            <div *ngIf="registerForm.hasError('mismatch')" class="text-red-500 text-sm">
+                Passwords do not match
+            </div>
+        </div>
+
+        <!-- Phone Field -->
+        <div class="relative z-0 w-full mb-5 group">
+            <input type="text" formControlName="phone" name="floating_phone" id="floating_phone"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer"
+                placeholder=" " required />
+            <label for="floating_phone"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-green-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                Phone
+            </label>
+            <div *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched"
+                class="text-red-500 text-sm">
+                Phone number is required
+            </div>
+        </div>
+
+        <div *ngIf="errorMessage" class="text-red-500 text-sm">
+            {{errorMessage}}
+        </div>
+
+        <div *ngIf="successMessage" class="text-green-500 text-sm">
+            {{successMessage}}
+        </div>
+
+        <button type="submit" [disabled]="registerForm.invalid"
+            class="outline-1 hover:bg-green-400 hover:text-white bg-white text-black font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+            Submit
+        </button>
+    </form>
+</div>
