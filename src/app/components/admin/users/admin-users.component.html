@@ -1,0 +1,225 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex justify-between items-center">
+    <h1 class="text-3xl font-bold">Users Management</h1>
+    <div class="flex gap-2">
+      <select class="select select-bordered" [(ngModel)]="selectedRole" (change)="onRoleFilter()">
+        <option value="">All Roles</option>
+        <option value="user">Users</option>
+        <option value="admin">Admins</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <div class="bg-white shadow-lg rounded-lg p-6">
+    <div class="flex flex-col md:flex-row gap-4">
+      <div class="flex-1">
+        <input 
+          type="text" 
+          placeholder="Search users by name or email..." 
+          class="input input-bordered w-full"
+          [(ngModel)]="searchTerm"
+          (input)="onSearch()"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="flex justify-center items-center py-12">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <!-- Users Table -->
+  <div *ngIf="!isLoading" class="bg-white shadow-lg rounded-lg overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="table table-zebra w-full">
+        <thead class="bg-gray-50">
+          <tr>
+            <th>User</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>
+              <div class="flex items-center gap-3">
+                <div class="avatar placeholder">
+                  <div class="bg-neutral text-neutral-content rounded-full w-12">
+                    <span class="text-xl">{{ user.name.charAt(0).toUpperCase() }}</span>
+                  </div>
+                </div>
+                <div>
+                  <div class="font-bold">{{ user.name }}</div>
+                  <div class="text-sm opacity-50">ID: {{ user._id }}</div>
+                </div>
+              </div>
+            </td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.phone || 'N/A' }}</td>
+            <td>
+              <div class="badge" [ngClass]="{
+                'badge-primary': user.role === 'admin',
+                'badge-secondary': user.role === 'user'
+              }">
+                {{ user.role }}
+              </div>
+            </td>
+            <td>
+              <div class="badge" [ngClass]="{
+                'badge-success': user.active !== false,
+                'badge-error': user.active === false
+              }">
+                {{ user.active !== false ? 'Active' : 'Inactive' }}
+              </div>
+            </td>
+            <td>
+              <div class="dropdown dropdown-end">
+                <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
+                  <mat-icon>more_vert</mat-icon>
+                </div>
+                <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                  <li>
+                    <a (click)="editUser(user)">
+                      <mat-icon>edit</mat-icon>
+                      Edit User
+                    </a>
+                  </li>
+                  <li>
+                    <a (click)="changePassword(user)">
+                      <mat-icon>lock</mat-icon>
+                      Change Password
+                    </a>
+                  </li>
+                  <li>
+                    <a (click)="toggleUserStatus(user)" 
+                       [class.text-error]="user.active !== false"
+                       [class.text-success]="user.active === false">
+                      <mat-icon>{{ user.active !== false ? 'block' : 'check_circle' }}</mat-icon>
+                      {{ user.active !== false ? 'Deactivate' : 'Activate' }}
+                    </a>
+                  </li>
+                  <li>
+                    <a (click)="deleteUser(user._id!, user.name)" class="text-error">
+                      <mat-icon>delete</mat-icon>
+                      Delete User
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center mt-6 pb-6" *ngIf="totalPages > 1">
+      <div class="join">
+        <button 
+          class="join-item btn" 
+          [disabled]="currentPage === 1"
+          (click)="changePage(currentPage - 1)"
+        >
+          «
+        </button>
+        
+        <button 
+          *ngFor="let page of getPageNumbers()" 
+          class="join-item btn"
+          [class.btn-active]="page === currentPage"
+          (click)="changePage(page)"
+        >
+          {{ page }}
+        </button>
+        
+        <button 
+          class="join-item btn"
+          [disabled]="currentPage === totalPages"
+          (click)="changePage(currentPage + 1)"
+        >
+          »
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit User Modal -->
+<div class="modal" [class.modal-open]="showEditModal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg mb-4">Edit User</h3>
+    
+    <form [formGroup]="editUserForm" (ngSubmit)="saveUser()" class="space-y-4">
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text">Name</span>
+        </label>
+        <input type="text" formControlName="name" class="input input-bordered" />
+      </div>
+      
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text">Email</span>
+        </label>
+        <input type="email" formControlName="email" class="input input-bordered" />
+      </div>
+      
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text">Phone</span>
+        </label>
+        <input type="text" formControlName="phone" class="input input-bordered" />
+      </div>
+      
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text">Role</span>
+        </label>
+        <select formControlName="role" class="select select-bordered">
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      
+      <div class="modal-action">
+        <button type="submit" class="btn btn-primary" [disabled]="editUserForm.invalid">
+          Save Changes
+        </button>
+        <button type="button" class="btn" (click)="closeEditModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Change Password Modal -->
+<div class="modal" [class.modal-open]="showPasswordModal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg mb-4">Change Password</h3>
+    
+    <form [formGroup]="passwordForm" (ngSubmit)="savePassword()" class="space-y-4">
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text">New Password</span>
+        </label>
+        <input type="password" formControlName="password" class="input input-bordered" />
+        <div *ngIf="passwordForm.get('password')?.invalid && passwordForm.get('password')?.touched" 
+             class="label">
+          <span class="label-text-alt text-error">Password must be at least 6 characters</span>
+        </div>
+      </div>
+      
+      <div class="modal-action">
+        <button type="submit" class="btn btn-primary" [disabled]="passwordForm.invalid">
+          Change Password
+        </button>
+        <button type="button" class="btn" (click)="closePasswordModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

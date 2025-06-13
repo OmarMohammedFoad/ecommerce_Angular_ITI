@@ -1,0 +1,84 @@
+<div class="max-w-2xl mx-auto">
+  <div class="bg-white shadow-lg rounded-lg p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold">{{ isEditMode ? 'Edit Category' : 'Create New Category' }}</h1>
+      <button routerLink="/admin/categories" class="btn btn-ghost">
+        <mat-icon>arrow_back</mat-icon>
+        Back to Categories
+      </button>
+    </div>
+
+    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <!-- Category Name -->
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-semibold">Category Name *</span>
+        </label>
+        <input 
+          type="text" 
+          formControlName="name"
+          class="input input-bordered"
+          [class.input-error]="categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched"
+          placeholder="Enter category name"
+        />
+        <div *ngIf="categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched" 
+             class="label">
+          <span class="label-text-alt text-error">Category name is required</span>
+        </div>
+      </div>
+
+      <!-- Category Image -->
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-semibold">Category Image URL *</span>
+        </label>
+        <input 
+          type="url" 
+          formControlName="image"
+          class="input input-bordered"
+          [class.input-error]="categoryForm.get('image')?.invalid && categoryForm.get('image')?.touched"
+          placeholder="https://example.com/image.jpg"
+        />
+        <div *ngIf="categoryForm.get('image')?.invalid && categoryForm.get('image')?.touched" 
+             class="label">
+          <span class="label-text-alt text-error">Valid image URL is required</span>
+        </div>
+      </div>
+
+      <!-- Image Preview -->
+      <div *ngIf="categoryForm.get('image')?.value" class="form-control">
+        <label class="label">
+          <span class="label-text font-semibold">Image Preview</span>
+        </label>
+        <div class="w-48 h-48 rounded-lg overflow-hidden border">
+          <img 
+            [src]="categoryForm.get('image')?.value" 
+            alt="Category preview"
+            class="w-full h-full object-cover"
+            (error)="onImageError()"
+          />
+        </div>
+      </div>
+
+      <!-- Submit Buttons -->
+      <div class="flex gap-4 pt-6">
+        <button 
+          type="submit" 
+          class="btn btn-primary"
+          [disabled]="categoryForm.invalid || isSubmitting"
+        >
+          <span *ngIf="isSubmitting" class="loading loading-spinner loading-sm"></span>
+          {{ isEditMode ? 'Update Category' : 'Create Category' }}
+        </button>
+        
+        <button 
+          type="button" 
+          class="btn btn-ghost"
+          routerLink="/admin/categories"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

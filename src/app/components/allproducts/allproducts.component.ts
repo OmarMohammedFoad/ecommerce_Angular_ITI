@@ -27,6 +27,7 @@ import { WishlishService } from '../../service/wishlish.service';
 })
 export class AllproductsComponent implements OnInit {
   products: any[] = [];
+  filteredProducts: any[] = [];
   currentPage = 1;
   totalPages = 1;
   totalItems = 0;
@@ -34,17 +35,22 @@ export class AllproductsComponent implements OnInit {
   isLoading = false;
   errorMessage: string = '';
   Math: any;
+  numOfCartItems: number = 0;
 
   constructor(
     private productService: ProductsService,
     private addToCartService: AddtoCartService,
     private wishListService: WishlishService,
     private toast: ToastrService
-  ) {}
+  ) {
+    this.filteredProducts = this.products;
+  }
 
   ngOnInit(): void {
     this.getAllProduct();
+
   }
+
   getAllProduct(page: number = 1) {
     this.isLoading = true;
     this.currentPage = page;
@@ -52,6 +58,9 @@ export class AllproductsComponent implements OnInit {
     this.productService.getAllProducts(page, this.itemsPerPage).subscribe({
       next: (response) => {
         this.products = response.data;
+        this.filteredProducts = this.products; // Initialize filteredProducts with all products
+        this.addToCartService.cartNum.next(response.data.reduce((acc, product) => acc + product.numOfCartItems, 0));
+
         this.totalItems = response.results;
         this.totalPages = response.metadata.numberOfPages;
         this.isLoading = false;
@@ -62,6 +71,20 @@ export class AllproductsComponent implements OnInit {
       },
     });
   }
+
+  filterResults(text: string) {
+    if (!text) {
+      this.filteredProducts = this.products;
+      return;
+    }
+    console.log(text);
+    this.filteredProducts = this.products.filter((product) => {
+      // console.log(product);
+
+      return product.title.toLowerCase().includes(text.toLowerCase())
+    });
+  }
+
   changePage(newPage: number): void {
     if (
       newPage >= 1 &&

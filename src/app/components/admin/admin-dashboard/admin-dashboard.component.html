@@ -1,0 +1,94 @@
+<div class="space-y-6">
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="stat bg-white shadow-lg rounded-lg p-6">
+      <div class="stat-figure text-primary">
+        <mat-icon class="text-4xl">inventory</mat-icon>
+      </div>
+      <div class="stat-title">Total Products</div>
+      <div class="stat-value text-primary">{{ stats.totalProducts }}</div>
+      <div class="stat-desc">{{ stats.activeProducts }} active</div>
+    </div>
+
+    <div class="stat bg-white shadow-lg rounded-lg p-6">
+      <div class="stat-figure text-secondary">
+        <mat-icon class="text-4xl">category</mat-icon>
+      </div>
+      <div class="stat-title">Categories</div>
+      <div class="stat-value text-secondary">{{ stats.totalCategories }}</div>
+      <div class="stat-desc">All categories</div>
+    </div>
+
+    <div class="stat bg-white shadow-lg rounded-lg p-6">
+      <div class="stat-figure text-accent">
+        <mat-icon class="text-4xl">people</mat-icon>
+      </div>
+      <div class="stat-title">Total Users</div>
+      <div class="stat-value text-accent">{{ stats.totalUsers }}</div>
+      <div class="stat-desc">{{ stats.activeUsers }} active</div>
+    </div>
+
+    <div class="stat bg-white shadow-lg rounded-lg p-6">
+      <div class="stat-figure text-success">
+        <mat-icon class="text-4xl">shopping_cart</mat-icon>
+      </div>
+      <div class="stat-title">Orders</div>
+      <div class="stat-value text-success">{{ stats.totalOrders }}</div>
+      <div class="stat-desc">This month</div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="bg-white shadow-lg rounded-lg p-6">
+    <h2 class="text-2xl font-bold mb-4">Quick Actions</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <button routerLink="/admin/products/create" class="btn btn-primary btn-lg">
+        <mat-icon>add</mat-icon>
+        Add New Product
+      </button>
+      
+      <button routerLink="/admin/categories/create" class="btn btn-secondary btn-lg">
+        <mat-icon>add</mat-icon>
+        Add New Category
+      </button>
+      
+      <button routerLink="/admin/users" class="btn btn-accent btn-lg">
+        <mat-icon>people</mat-icon>
+        Manage Users
+      </button>
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="bg-white shadow-lg rounded-lg p-6">
+    <h2 class="text-2xl font-bold mb-4">Recent Activity</h2>
+    <div class="overflow-x-auto">
+      <table class="table table-zebra w-full">
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>Item</th>
+            <th>Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let activity of recentActivity">
+            <td>{{ activity.action }}</td>
+            <td>{{ activity.item }}</td>
+            <td>{{ activity.date | date:'short' }}</td>
+            <td>
+              <div class="badge" [ngClass]="{
+                'badge-success': activity.status === 'success',
+                'badge-warning': activity.status === 'pending',
+                'badge-error': activity.status === 'error'
+              }">
+                {{ activity.status }}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

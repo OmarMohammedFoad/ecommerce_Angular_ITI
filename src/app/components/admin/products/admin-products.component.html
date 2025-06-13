@@ -1,0 +1,133 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex justify-between items-center">
+    <h1 class="text-3xl font-bold">Products Management</h1>
+    <button routerLink="/admin/products/create" class="btn btn-primary">
+      <mat-icon>add</mat-icon>
+      Add New Product
+    </button>
+  </div>
+
+  <!-- Search and Filters -->
+  <div class="bg-white shadow-lg rounded-lg p-6">
+    <div class="flex flex-col md:flex-row gap-4">
+      <div class="flex-1">
+        <input 
+          type="text" 
+          placeholder="Search products..." 
+          class="input input-bordered w-full"
+          [(ngModel)]="searchTerm"
+          (input)="onSearch()"
+        />
+      </div>
+      <select class="select select-bordered" [(ngModel)]="selectedCategory" (change)="onCategoryFilter()">
+        <option value="">All Categories</option>
+        <option *ngFor="let category of categories" [value]="category._id">
+          {{ category.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="flex justify-center items-center py-12">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <!-- Products Table -->
+  <div *ngIf="!isLoading" class="bg-white shadow-lg rounded-lg overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="table table-zebra w-full">
+        <thead class="bg-gray-50">
+          <tr>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Rating</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products">
+            <td>
+              <div class="avatar">
+                <div class="w-16 h-16 rounded">
+                  <img [src]="product.imageCover" [alt]="product.title" class="object-cover" />
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="font-bold">{{ product.title }}</div>
+              <div class="text-sm opacity-50">{{ product.description | slice:0:50 }}...</div>
+            </td>
+            <td>{{ product.category?.toString() }}</td>
+            <td class="font-bold text-primary">{{ product.price }} EGP</td>
+            <td>
+              <div class="badge" [ngClass]="{
+                'badge-success': product.quantity > 10,
+                'badge-warning': product.quantity > 0 && product.quantity <= 10,
+                'badge-error': product.quantity === 0
+              }">
+                {{ product.quantity }}
+              </div>
+            </td>
+            <td>
+              <div class="flex items-center gap-1">
+                <mat-icon class="text-yellow-500 text-sm">star</mat-icon>
+                <span>{{ product.ratingsAverage || 0 }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="flex gap-2">
+                <button 
+                  class="btn btn-sm btn-ghost"
+                  [routerLink]="['/admin/products/edit', product._id]"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button 
+                  class="btn btn-sm btn-ghost text-error"
+                  (click)="deleteProduct(product._id!, product.title)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center mt-6 pb-6" *ngIf="totalPages > 1">
+      <div class="join">
+        <button 
+          class="join-item btn" 
+          [disabled]="currentPage === 1"
+          (click)="changePage(currentPage - 1)"
+        >
+          «
+        </button>
+        
+        <button 
+          *ngFor="let page of getPageNumbers()" 
+          class="join-item btn"
+          [class.btn-active]="page === currentPage"
+          (click)="changePage(page)"
+        >
+          {{ page }}
+        </button>
+        
+        <button 
+          class="join-item btn"
+          [disabled]="currentPage === totalPages"
+          (click)="changePage(currentPage + 1)"
+        >
+          »
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

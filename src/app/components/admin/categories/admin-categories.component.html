@@ -1,0 +1,54 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex justify-between items-center">
+    <h1 class="text-3xl font-bold">Categories Management</h1>
+    <button routerLink="/admin/categories/create" class="btn btn-primary">
+      <mat-icon>add</mat-icon>
+      Add New Category
+    </button>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="flex justify-center items-center py-12">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <!-- Categories Grid -->
+  <div *ngIf="!isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div *ngFor="let category of categories" class="card bg-white shadow-lg hover:shadow-xl transition-shadow">
+      <figure class="h-48">
+        <img [src]="category.image" [alt]="category.name" class="w-full h-full object-cover" />
+      </figure>
+      <div class="card-body">
+        <h2 class="card-title">{{ category.name }}</h2>
+        <p class="text-sm text-gray-500">{{ category.slug }}</p>
+        
+        <div class="card-actions justify-end mt-4">
+          <button 
+            class="btn btn-sm btn-ghost"
+            [routerLink]="['/admin/categories/edit', category._id]"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button 
+            class="btn btn-sm btn-ghost text-error"
+            (click)="deleteCategory(category._id!, category.name)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && categories.length === 0" class="text-center py-12">
+    <mat-icon class="text-6xl text-gray-400 mb-4">category</mat-icon>
+    <h3 class="text-xl font-semibold text-gray-600 mb-2">No Categories Found</h3>
+    <p class="text-gray-500 mb-4">Get started by creating your first category.</p>
+    <button routerLink="/admin/categories/create" class="btn btn-primary">
+      <mat-icon>add</mat-icon>
+      Create Category
+    </button>
+  </div>
+</div>

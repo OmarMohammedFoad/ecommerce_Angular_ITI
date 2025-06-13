@@ -1,0 +1,83 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Admin Sidebar -->
+  <div class="drawer lg:drawer-open">
+    <input id="admin-drawer" type="checkbox" class="drawer-toggle" />
+    
+    <!-- Page content -->
+    <div class="drawer-content flex flex-col">
+      <!-- Navbar -->
+      <div class="navbar bg-white shadow-sm border-b">
+        <div class="flex-none lg:hidden">
+          <label for="admin-drawer" class="btn btn-square btn-ghost">
+            <mat-icon>menu</mat-icon>
+          </label>
+        </div>
+        <div class="flex-1">
+          <h1 class="text-xl font-bold">Admin Dashboard</h1>
+        </div>
+        <div class="flex-none">
+          <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+              <div class="w-10 rounded-full bg-primary text-white flex items-center justify-center">
+                <mat-icon>person</mat-icon>
+              </div>
+            </div>
+            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+              <li><a routerLink="/">Back to Store</a></li>
+              <li><a (click)="logout()">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Page Content -->
+      <main class="flex-1 p-6">
+        <router-outlet></router-outlet>
+      </main>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="drawer-side">
+      <label for="admin-drawer" class="drawer-overlay"></label>
+      <aside class="w-64 min-h-full bg-white shadow-lg">
+        <div class="p-4 border-b">
+          <h2 class="text-lg font-bold text-gray-800">Admin Panel</h2>
+        </div>
+        
+        <ul class="menu p-4 space-y-2">
+          <li>
+            <a routerLink="/admin/dashboard" routerLinkActive="bg-primary text-white" 
+               class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+              <mat-icon>dashboard</mat-icon>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          
+          <li>
+            <a routerLink="/admin/products" routerLinkActive="bg-primary text-white"
+               class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+              <mat-icon>inventory</mat-icon>
+              <span>Products</span>
+            </a>
+          </li>
+          
+          <li>
+            <a routerLink="/admin/categories" routerLinkActive="bg-primary text-white"
+               class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+              <mat-icon>category</mat-icon>
+              <span>Categories</span>
+            </a>
+          </li>
+          
+          <li>
+            <a routerLink="/admin/users" routerLinkActive="bg-primary text-white"
+               class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+              <mat-icon>people</mat-icon>
+              <span>Users</span>
+            </a>
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</div>

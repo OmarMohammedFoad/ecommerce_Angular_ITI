@@ -1,0 +1,208 @@
+<div class="max-w-4xl mx-auto">
+  <div class="bg-white shadow-lg rounded-lg p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold">{{ isEditMode ? 'Edit Product' : 'Create New Product' }}</h1>
+      <button routerLink="/admin/products" class="btn btn-ghost">
+        <mat-icon>arrow_back</mat-icon>
+        Back to Products
+      </button>
+    </div>
+
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <!-- Basic Information -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-semibold">Product Title *</span>
+          </label>
+          <input 
+            type="text" 
+            formControlName="title"
+            class="input input-bordered"
+            [class.input-error]="productForm.get('title')?.invalid && productForm.get('title')?.touched"
+            placeholder="Enter product title"
+          />
+          <div *ngIf="productForm.get('title')?.invalid && productForm.get('title')?.touched" 
+               class="label">
+            <span class="label-text-alt text-error">Title is required</span>
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-semibold">Price (EGP) *</span>
+          </label>
+          <input 
+            type="number" 
+            formControlName="price"
+            class="input input-bordered"
+            [class.input-error]="productForm.get('price')?.invalid && productForm.get('price')?.touched"
+            placeholder="0.00"
+            min="0"
+            step="0.01"
+          />
+          <div *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched" 
+               class="label">
+            <span class="label-text-alt text-error">Valid price is required</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-semibold">Description *</span>
+        </label>
+        <textarea 
+          formControlName="description"
+          class="textarea textarea-bordered h-32"
+          [class.textarea-error]="productForm.get('description')?.invalid && productForm.get('description')?.touched"
+          placeholder="Enter product description"
+        ></textarea>
+        <div *ngIf="productForm.get('description')?.invalid && productForm.get('description')?.touched" 
+             class="label">
+          <span class="label-text-alt text-error">Description is required</span>
+        </div>
+      </div>
+
+      <!-- Category and Stock -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-semibold">Category *</span>
+          </label>
+          <select 
+            formControlName="category"
+            class="select select-bordered"
+            [class.select-error]="productForm.get('category')?.invalid && productForm.get('category')?.touched"
+          >
+            <option value="">Select a category</option>
+            <option *ngFor="let category of categories" [value]="category._id">
+              {{ category.name }}
+            </option>
+          </select>
+          <div *ngIf="productForm.get('category')?.invalid && productForm.get('category')?.touched" 
+               class="label">
+            <span class="label-text-alt text-error">Category is required</span>
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-semibold">Stock Quantity *</span>
+          </label>
+          <input 
+            type="number" 
+            formControlName="quantity"
+            class="input input-bordered"
+            [class.input-error]="productForm.get('quantity')?.invalid && productForm.get('quantity')?.touched"
+            placeholder="0"
+            min="0"
+          />
+          <div *ngIf="productForm.get('quantity')?.invalid && productForm.get('quantity')?.touched" 
+               class="label">
+            <span class="label-text-alt text-error">Quantity is required</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Images -->
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-semibold">Main Image URL *</span>
+        </label>
+        <input 
+          type="url" 
+          formControlName="imageCover"
+          class="input input-bordered"
+          [class.input-error]="productForm.get('imageCover')?.invalid && productForm.get('imageCover')?.touched"
+          placeholder="https://example.com/image.jpg"
+        />
+        <div *ngIf="productForm.get('imageCover')?.invalid && productForm.get('imageCover')?.touched" 
+             class="label">
+          <span class="label-text-alt text-error">Valid image URL is required</span>
+        </div>
+      </div>
+
+      <!-- Additional Images -->
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-semibold">Additional Images</span>
+        </label>
+        <div formArrayName="images" class="space-y-2">
+          <div *ngFor="let imageControl of imagesArray.controls; let i = index" 
+               class="flex gap-2 items-center">
+            <input 
+              type="url" 
+              [formControlName]="i"
+              class="input input-bordered flex-1"
+              placeholder="https://example.com/image.jpg"
+            />
+            <button 
+              type="button" 
+              class="btn btn-sm btn-error"
+              (click)="removeImage(i)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+        <button 
+          type="button" 
+          class="btn btn-sm btn-outline mt-2"
+          (click)="addImage()"
+        >
+          <mat-icon>add</mat-icon>
+          Add Image
+        </button>
+      </div>
+
+      <!-- Optional Fields -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-semibold">Brand</span>
+          </label>
+          <input 
+            type="text" 
+            formControlName="brand"
+            class="input input-bordered"
+            placeholder="Enter brand name"
+          />
+        </div>
+
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-semibold">Subcategory</span>
+          </label>
+          <input 
+            type="text" 
+            formControlName="subcategory"
+            class="input input-bordered"
+            placeholder="Enter subcategory"
+          />
+        </div>
+      </div>
+
+      <!-- Submit Buttons -->
+      <div class="flex gap-4 pt-6">
+        <button 
+          type="submit" 
+          class="btn btn-primary"
+          [disabled]="productForm.invalid || isSubmitting"
+        >
+          <span *ngIf="isSubmitting" class="loading loading-spinner loading-sm"></span>
+          {{ isEditMode ? 'Update Product' : 'Create Product' }}
+        </button>
+        
+        <button 
+          type="button" 
+          class="btn btn-ghost"
+          routerLink="/admin/products"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

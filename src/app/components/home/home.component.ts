@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AddToCart } from '../addToCart/addtocart.component';
 import { AddtoCartService } from '../../service/addtocart.service';
-import {ProgressSpinnerMode, MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSliderModule} from '@angular/material/slider';
+import { ProgressSpinnerMode, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSliderModule } from '@angular/material/slider';
 import { ToastrService } from 'ngx-toastr';
 import { WishlishService } from '../../service/wishlish.service';
 import { MatIcon } from '@angular/material/icon';
@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
   wishlist: string[] = [];
   errorMessage: string = '';
   isLoading: boolean = true;
+  totalItems: number = 0;
   mode: ProgressSpinnerMode = 'determinate';
   value = 50;
   constructor(
@@ -29,7 +30,7 @@ export class HomeComponent implements OnInit {
     private addToCartService: AddtoCartService,
     private wishListService: WishlishService,
     private toast: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getAllProduct();
@@ -44,6 +45,8 @@ export class HomeComponent implements OnInit {
       next: (res: any) => {
         this.products = res.data || res;
         this.isLoading = false;
+        this.totalItems = res.results;
+
       },
       error: (error) => {
         this.errorMessage = error.message || 'Failed to load products';
@@ -61,6 +64,8 @@ export class HomeComponent implements OnInit {
         console.log(res);
         this.isLoading = false;
         this.toast.success(res.message, 'Fresh Cart');
+        this.addToCartService.cartNum.next(res.data.reduce((acc: number, product: any) => acc + product.numOfCartItems, 0));
+
       },
       error: (error: any) => {
         console.log(error);

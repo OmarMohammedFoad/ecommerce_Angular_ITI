@@ -15,12 +15,17 @@ export class NavbarComponent {
   cartCount = 0;
   wishCount = 2;
 
+
   constructor(
     private router: Router,
     private auth: AuthService,
     private addtoCartService: AddtoCartService
   ) {
     // this.updateCartCount();
+    this.addtoCartService.cartNum.subscribe((res) => {
+      this.cartCount = res;
+    });
+
   }
 
   // updateCartCount() {
