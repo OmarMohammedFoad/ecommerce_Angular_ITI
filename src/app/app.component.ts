@@ -5,8 +5,9 @@ import { NavbarComponent } from './components/shared/navbar/navbar.component';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, NavbarComponent],
-  providers: [NgModule],
   templateUrl: './app.component.html',
+  providers: [NgModule],
+
   styleUrl: './app.component.css',
 })
 export class AppComponent {

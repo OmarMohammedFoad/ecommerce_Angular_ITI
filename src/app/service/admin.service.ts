@@ -137,7 +137,7 @@ export class AdminService {
     return this.http.delete(`${this.baseUrl}/users/${id}`, {
       headers: this.getHeaders()
     });
-  } 
+  }
 
   changeUserPassword(id: string, password: string): Observable<any> {
     return this.http.put(`${this.baseUrl}/users/changePassword/${id}`, 
