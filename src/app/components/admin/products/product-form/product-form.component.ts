@@ -16,7 +16,7 @@ export class ProductFormComponent implements OnInit {
   categories: any[] = [];
   isEditMode = false;
   isSubmitting = false;
-  productId: string | null = null;
+  productId: any = null;
 
   constructor(
     private fb: FormBuilder,
@@ -42,12 +42,13 @@ export class ProductFormComponent implements OnInit {
 
   createForm(): FormGroup {
     return this.fb.group({
+      id: ['', Validators.required],
       title: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
       price: [0, [Validators.required, Validators.min(0)]],
       imageCover: ['', [Validators.required, Validators.pattern(/^https?:\/\/.+/)]],
       images: this.fb.array([]),
-      category: ['', Validators.required],
+      category: [''],
       subcategory: [''],
       brand: [''],
       quantity: [0, [Validators.required, Validators.min(0)]]
@@ -69,7 +70,9 @@ export class ProductFormComponent implements OnInit {
   loadCategories() {
     this.adminService.getAllCategories().subscribe({
       next: (response) => {
-        this.categories = response.data || [];
+        console.log(response);
+
+        this.categories = response || [];
       },
       error: (error) => {
         console.error('Error loading categories:', error);
@@ -81,8 +84,10 @@ export class ProductFormComponent implements OnInit {
   loadProduct(id: string) {
     this.adminService.getProduct(id).subscribe({
       next: (response) => {
-        const product = response.data;
+        const product = response;
+
         this.productForm.patchValue({
+          id: product.id,
           title: product.title,
           description: product.description,
           price: product.price,

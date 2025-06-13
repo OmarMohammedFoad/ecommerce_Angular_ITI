@@ -83,13 +83,13 @@
               <div class="flex gap-2">
                 <button 
                   class="btn btn-sm btn-ghost"
-                  [routerLink]="['/admin/products/edit', product._id]"
+                  [routerLink]="['/admin/products/edit', product.id]"
                 >
                   <mat-icon>edit</mat-icon>
                 </button>
                 <button 
                   class="btn btn-sm btn-ghost text-error"
-                  (click)="deleteProduct(product._id!, product.title)"
+                  (click)="deleteProduct(product.id!, product.title)"
                 >
                   <mat-icon>delete</mat-icon>
                 </button>

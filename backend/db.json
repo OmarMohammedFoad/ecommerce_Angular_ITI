@@ -1,0 +1,67 @@
+{
+  "products": [
+    {
+      "id": "8612",
+      "title": "asasd",
+      "description": "asdsadasdsadasdsadasdsad",
+      "price": 0,
+      "imageCover": "https://encrypted-tbn0.gstatic.com/",
+      "images": [],
+      "category": "undefined",
+      "subcategory": "",
+      "brand": "",
+      "quantity": 20
+    },
+    {
+      "id": "1",
+      "title": "asdasd",
+      "description": "asdsadasdasdasdsa",
+      "price": 400,
+      "imageCover": "https://encrypted-tbn0.gstatic.com/",
+      "images": [],
+      "category": "",
+      "subcategory": "",
+      "brand": "",
+      "quantity": 0
+    }
+  ],
+  "categories": [
+    {
+      "id": "1",
+      "name": "Women's Fashion",
+      "slug": "womens-fashion",
+      "image": "https://ecommerce.routemisr.com/Route-Academy-categories/1681511818071.jpeg"
+    }
+  ],
+  "brands": [
+    {
+      "id": "1",
+      "name": "DeFacto",
+      "slug": "defacto",
+      "image": "https://ecommerce.routemisr.com/Route-Academy-brands/1678285758109.png"
+    }
+  ],
+  "orders": [
+    {
+      "id": "1",
+      "userId": "u1",
+      "products": [
+        {
+          "productId": "1",
+          "quantity": 2,
+          "price": 191
+        }
+      ],
+      "totalPrice": 382,
+      "status": "pending",
+      "createdAt": "2025-06-13T14:00:00.000Z"
+    }
+  ],
+  "users": [
+    {
+      "id": "u1",
+      "name": "Omar Fouad",
+      "email": "omar@example.com"
+    }
+  ]
+}

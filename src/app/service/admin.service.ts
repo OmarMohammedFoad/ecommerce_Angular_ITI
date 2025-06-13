@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Product {
-  _id?: string;
+  id?: string;
   title: string;
   description: string;
   price: number;
@@ -37,7 +37,7 @@ export interface User {
   providedIn: 'root'
 })
 export class AdminService {
-  private baseUrl = 'https://ecommerce.routemisr.com/api/v1';
+  private baseUrl = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
 

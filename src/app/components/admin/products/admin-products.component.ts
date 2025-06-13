@@ -42,9 +42,9 @@ export class AdminProductsComponent implements OnInit {
     this.isLoading = true;
     this.adminService.getAllProducts(this.currentPage, this.itemsPerPage).subscribe({
       next: (response) => {
-        console.log(response.data);
+        console.log(response);
         
-        this.products = response.data || [];
+        this.products = response || [];
         this.totalPages = response.metadata?.numberOfPages || 1;
         this.isLoading = false;
       },
@@ -59,7 +59,7 @@ export class AdminProductsComponent implements OnInit {
   loadCategories() {
     this.adminService.getAllCategories().subscribe({
       next: (response) => {
-        this.categories = response.data || [];
+        this.categories = response || [];
       },
       error: (error) => {
         console.error('Error loading categories:', error);
@@ -99,6 +99,8 @@ export class AdminProductsComponent implements OnInit {
 
   deleteProduct(id: string, title: string) {
     if (confirm(`Are you sure you want to delete "${title}"?`)) {
+      console.log(`Deleting product with ID: ${id}`);
+
       this.adminService.deleteProduct(id).subscribe({
         next: () => {
           this.toastr.success('Product deleted successfully');

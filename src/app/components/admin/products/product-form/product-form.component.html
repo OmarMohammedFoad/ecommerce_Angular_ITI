@@ -1,5 +1,5 @@
 <div class="max-w-4xl mx-auto">
-  <div class="bg-white shadow-lg rounded-lg p-6">
+  <div class="bg-black shadow-lg rounded-lg p-6">
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-3xl font-bold">{{ isEditMode ? 'Edit Product' : 'Create New Product' }}</h1>
       <button routerLink="/admin/products" class="btn btn-ghost">
@@ -8,9 +8,21 @@
       </button>
     </div>
 
-    <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="space-y-6">
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class=" space-y-6">
       <!-- Basic Information -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="flex flex-col md:flex-row gap-6">
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-semibold">Product id *</span>
+          </label>
+          <input type="text" formControlName="id" class="input input-bordered"
+            [class.input-error]="productForm.get('id')?.invalid && productForm.get('id')?.touched"
+            placeholder="Enter product id" />
+          <div *ngIf="productForm.get('id')?.invalid && productForm.get('id')?.touched" class="label">
+            <span class="label-text-alt text-error">id is required</span>
+          </div>
+        </div>
+
         <div class="form-control">
           <label class="label">
             <span class="label-text font-semibold">Product Title *</span>
@@ -49,7 +61,7 @@
       </div>
 
       <!-- Description -->
-      <div class="form-control">
+      <div class="form-control flex justify-first">
         <label class="label">
           <span class="label-text font-semibold">Description *</span>
         </label>
